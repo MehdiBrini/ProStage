@@ -2,3 +2,14 @@ pro_stage_accueil:
     path: /
     controller: App\Controller\ProStageController::index
 
+pro_stage_entreprises:
+    path: /entreprises
+    controller: App\Controller\ProStageController::afficherEntreprises
+
+pro_stage_formations:
+    path: /formations
+    controller: App\Controller\ProStageController::afficherFormations
+
+pro_stage_stages:
+    path: /stages/{leID}
+    controller: App\Controller\ProStageController::afficherStages
