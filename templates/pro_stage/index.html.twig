@@ -10,7 +10,19 @@
 
     <ul>
         <li>
-            <a href="{{path('pro_stage_stages',{leID:5})}}">Le stage n°5</a> 
+            {# Block de type carte pourt présenter stage #}
+           
+            <div class="card" style="width: 80rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Titre stage</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Sous-titre stage</h6>
+                            <p class="card-text">Description du stage n°5</p>
+                            <div align="right"><a href="{{path('pro_stage_stages',{leID:5})}}" class="card-link">Voir plus</a></div>
+                            
+                    </div>
+            </div>
+            
+            
         </li>
 
     </ul>
