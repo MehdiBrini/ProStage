@@ -1,24 +1,18 @@
 
 {% extends 'base.html.twig' %}
-{% block body %}
 
+
+
+{% block body %}
 <h1>Bienvenue sur l'accueil de ProStage</h1>
 
-<p> Les ressources : </p>
+    <p> Les ressources : </p>
 
-<ul>
-    <li>
-        <a href="{{path('pro_stage_entreprises')}}">Les entreprises</a> 
-    </li>
+    <ul>
+        <li>
+            <a href="{{path('pro_stage_stages',{leID:5})}}">Le stage n°5</a> 
+        </li>
 
-    <li>
-        <a href="{{path('pro_stage_formations')}}">Les formations</a> 
-    </li>
-
-    <li>
-        <a href="{{path('pro_stage_stages',{leID:5})}}">Le stage n°5</a> 
-    </li>
-
-</ul>
+    </ul>
 
 {% endblock %}
