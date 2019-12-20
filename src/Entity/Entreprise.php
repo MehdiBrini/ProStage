@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Entity;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EntrepriseRepository")
  */
@@ -17,135 +14,107 @@ class Entreprise
      * @ORM\Column(type="integer")
      */
     private $id;
-
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="string", length=255)
      */
     private $nom;
-
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="text")
      */
-    private $siegeSocial;
-
+    private $activite;
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adresse;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $siteWeb;
-
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\OneToMany(targetEntity="App\Entity\Stage", mappedBy="entreprise")
      */
-    private $numTel;
-
-    /**
-     * @ORM\Column(type="string", length=200)
-     */
-    private $adresseMail;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Stage", mappedBy="EntrepriseReliee")
-     */
-    private $entreprises;
-
+    private $stages;
     public function __construct()
     {
-        $this->entreprises = new ArrayCollection();
+        $this->stages = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getNom(): ?string
     {
         return $this->nom;
     }
-
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
         return $this;
     }
-
-    public function getSiegeSocial(): ?string
+    public function getActivite(): ?string
     {
-        return $this->siegeSocial;
+        return $this->activite;
     }
-
-    public function setSiegeSocial(string $siegeSocial): self
+    public function setActivite(string $activite): self
     {
-        $this->siegeSocial = $siegeSocial;
-
+        $this->activite = $activite;
         return $this;
     }
-
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+        return $this;
+    }
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
     public function getSiteWeb(): ?string
     {
         return $this->siteWeb;
     }
-
-    public function setSiteWeb(string $siteWeb): self
+    public function setSiteWeb(?string $siteWeb): self
     {
         $this->siteWeb = $siteWeb;
-
         return $this;
     }
-
-    public function getNumTel(): ?string
-    {
-        return $this->numTel;
-    }
-
-    public function setNumTel(string $numTel): self
-    {
-        $this->numTel = $numTel;
-
-        return $this;
-    }
-
-    public function getAdresseMail(): ?string
-    {
-        return $this->adresseMail;
-    }
-
-    public function setAdresseMail(string $adresseMail): self
-    {
-        $this->adresseMail = $adresseMail;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Stage[]
      */
-    public function getEntreprises(): Collection
+    public function getStages(): Collection
     {
-        return $this->entreprises;
+        return $this->stages;
     }
-
-    public function addEntreprise(Stage $entreprise): self
+    public function addStage(Stage $stage): self
     {
-        if (!$this->entreprises->contains($entreprise)) {
-            $this->entreprises[] = $entreprise;
-            $entreprise->setEntrepriseReliee($this);
+        if (!$this->stages->contains($stage)) {
+            $this->stages[] = $stage;
+            $stage->setEntreprise($this);
         }
-
         return $this;
     }
-
-    public function removeEntreprise(Stage $entreprise): self
+    public function removeStage(Stage $stage): self
     {
-        if ($this->entreprises->contains($entreprise)) {
-            $this->entreprises->removeElement($entreprise);
+        if ($this->stages->contains($stage)) {
+            $this->stages->removeElement($stage);
             // set the owning side to null (unless already changed)
-            if ($entreprise->getEntrepriseReliee() === $this) {
-                $entreprise->setEntrepriseReliee(null);
+            if ($stage->getEntreprise() === $this) {
+                $stage->setEntreprise(null);
             }
         }
-
         return $this;
     }
 }

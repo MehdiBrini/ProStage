@@ -1,9 +1,8 @@
 <?php
-
 namespace App\Entity;
-
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StageRepository")
  */
@@ -15,164 +14,90 @@ class Stage
      * @ORM\Column(type="integer")
      */
     private $id;
-
     /**
-     * @ORM\Column(type="integer", length=8)
+     * @ORM\Column(type="string", length=255)
      */
-    private $idStage;
-
+    private $titre;
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="text")
      */
-    private $intitule;
-
+    private $description;
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="string", length=255)
      */
-    private $domaine;
-
+    private $email;
     /**
-     * @ORM\Column(type="string", length=200)
-     */
-    private $nomEntreprise;
-
-    /**
-     * @ORM\Column(type="string", length=200)
-     */
-    private $formation;
-
-    /**
-     * @ORM\Column(type="string", length=200)
-     */
-    private $lieu;
-
-    /**
-     * @ORM\Column(type="string", length=200)
-     */
-    private $contactMail;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Formation", inversedBy="formations")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Entreprise", inversedBy="stages")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $typeFormation;
-
+    private $entreprise;
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Entreprise", inversedBy="entreprises")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Formation", inversedBy="stages")
      */
-    private $EntrepriseReliee;
-
+    private $formations;
+    public function __construct()
+    {
+        $this->formations = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getIdStage(): ?string
+    public function getTitre(): ?string
     {
-        return $this->idStage;
+        return $this->titre;
     }
-
-    public function setIdStage(string $idStage): self
+    public function setTitre(string $titre): self
     {
-        $this->idStage = $idStage;
-
+        $this->titre = $titre;
         return $this;
     }
-
-    public function getIntitule(): ?string
+    public function getDescription(): ?string
     {
-        return $this->intitule;
+        return $this->description;
     }
-
-    public function setIntitule(string $intitule): self
+    public function setDescription(string $description): self
     {
-        $this->intitule = $intitule;
-
+        $this->description = $description;
         return $this;
     }
-
-    public function getDomaine(): ?string
+    public function getEmail(): ?string
     {
-        return $this->domaine;
+        return $this->email;
     }
-
-    public function setDomaine(string $domaine): self
+    public function setEmail(string $email): self
     {
-        $this->domaine = $domaine;
-
+        $this->email = $email;
         return $this;
     }
-
-    public function getNomEntreprise(): ?string
+    public function getEntreprise(): ?Entreprise
     {
-        return $this->nomEntreprise;
+        return $this->entreprise;
     }
-
-    public function setNomEntreprise(string $nomEntreprise): self
+    public function setEntreprise(?Entreprise $entreprise): self
     {
-        $this->nomEntreprise = $nomEntreprise;
-
+        $this->entreprise = $entreprise;
         return $this;
     }
-
-    public function getFormation(): ?string
+    /**
+     * @return Collection|Formation[]
+     */
+    public function getFormations(): Collection
     {
-        return $this->formation;
+        return $this->formations;
     }
-
-    public function setFormation(string $formation): self
+    public function addFormation(Formation $formation): self
     {
-        $this->formation = $formation;
-
+        if (!$this->formations->contains($formation)) {
+            $this->formations[] = $formation;
+        }
         return $this;
     }
-
-    public function getLieu(): ?string
+    public function removeFormation(Formation $formation): self
     {
-        return $this->lieu;
-    }
-
-    public function setLieu(string $lieu): self
-    {
-        $this->lieu = $lieu;
-
-        return $this;
-    }
-
-    public function getContactMail(): ?string
-    {
-        return $this->contactMail;
-    }
-
-    public function setContactMail(string $contactMail): self
-    {
-        $this->contactMail = $contactMail;
-
-        return $this;
-    }
-
-    public function getTypeFormation(): ?Formation
-    {
-        return $this->typeFormation;
-    }
-
-    public function setTypeFormation(?Formation $typeFormation): self
-    {
-        $this->typeFormation = $typeFormation;
-
-        return $this;
-    }
-
-    public function getEntrepriseReliee(): ?Entreprise
-    {
-        return $this->EntrepriseReliee;
-    }
-
-    public function setEntrepriseReliee(?Entreprise $EntrepriseReliee): self
-    {
-        $this->EntrepriseReliee = $EntrepriseReliee;
-
+        if ($this->formations->contains($formation)) {
+            $this->formations->removeElement($formation);
+        }
         return $this;
     }
 }

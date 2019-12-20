@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Entity;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FormationRepository")
  */
@@ -17,118 +14,65 @@ class Formation
      * @ORM\Column(type="integer")
      */
     private $id;
-
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="string", length=255)
      */
-    private $titre;
-
+    private $nomCourt;
     /**
-     * @ORM\Column(type="string", length=250)
+     * @ORM\Column(type="string", length=255)
      */
-    private $description;
-
+    private $nomLong;
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Stage", mappedBy="formations")
      */
-    private $domaine;
-
-    /**
-     * @ORM\Column(type="string", length=6)
-     */
-    private $niveauDelivre;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Stage", mappedBy="typeFormation")
-     */
-    private $formations;
-
+    private $stages;
     public function __construct()
     {
-        $this->formations = new ArrayCollection();
+        $this->stages = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getTitre(): ?string
+    public function getNomCourt(): ?string
     {
-        return $this->titre;
+        return $this->nomCourt;
     }
-
-    public function setTitre(string $titre): self
+    public function setNomCourt(string $nomCourt): self
     {
-        $this->titre = $titre;
-
+        $this->nomCourt = $nomCourt;
         return $this;
     }
-
-    public function getDescription(): ?string
+    public function getNomLong(): ?string
     {
-        return $this->description;
+        return $this->nomLong;
     }
-
-    public function setDescription(string $description): self
+    public function setNomLong(string $nomLong): self
     {
-        $this->description = $description;
-
+        $this->nomLong = $nomLong;
         return $this;
     }
-
-    public function getDomaine(): ?string
-    {
-        return $this->domaine;
-    }
-
-    public function setDomaine(string $domaine): self
-    {
-        $this->domaine = $domaine;
-
-        return $this;
-    }
-
-    public function getNiveauDelivre(): ?string
-    {
-        return $this->niveauDelivre;
-    }
-
-    public function setNiveauDelivre(string $niveauDelivre): self
-    {
-        $this->niveauDelivre = $niveauDelivre;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Stage[]
      */
-    public function getFormations(): Collection
+    public function getStages(): Collection
     {
-        return $this->formations;
+        return $this->stages;
     }
-
-    public function addFormation(Stage $formation): self
+    public function addStage(Stage $stage): self
     {
-        if (!$this->formations->contains($formation)) {
-            $this->formations[] = $formation;
-            $formation->setTypeFormation($this);
+        if (!$this->stages->contains($stage)) {
+            $this->stages[] = $stage;
+            $stage->addFormation($this);
         }
-
         return $this;
     }
-
-    public function removeFormation(Stage $formation): self
+    public function removeStage(Stage $stage): self
     {
-        if ($this->formations->contains($formation)) {
-            $this->formations->removeElement($formation);
-            // set the owning side to null (unless already changed)
-            if ($formation->getTypeFormation() === $this) {
-                $formation->setTypeFormation(null);
-            }
+        if ($this->stages->contains($stage)) {
+            $this->stages->removeElement($stage);
+            $stage->removeFormation($this);
         }
-
         return $this;
     }
 }
