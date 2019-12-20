@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,16 @@ class Entreprise
      * @ORM\Column(type="string", length=200)
      */
     private $adresseMail;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Stage", mappedBy="EntrepriseReliee")
+     */
+    private $entreprises;
+
+    public function __construct()
+    {
+        $this->entreprises = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -102,6 +114,37 @@ class Entreprise
     public function setAdresseMail(string $adresseMail): self
     {
         $this->adresseMail = $adresseMail;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Stage[]
+     */
+    public function getEntreprises(): Collection
+    {
+        return $this->entreprises;
+    }
+
+    public function addEntreprise(Stage $entreprise): self
+    {
+        if (!$this->entreprises->contains($entreprise)) {
+            $this->entreprises[] = $entreprise;
+            $entreprise->setEntrepriseReliee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntreprise(Stage $entreprise): self
+    {
+        if ($this->entreprises->contains($entreprise)) {
+            $this->entreprises->removeElement($entreprise);
+            // set the owning side to null (unless already changed)
+            if ($entreprise->getEntrepriseReliee() === $this) {
+                $entreprise->setEntrepriseReliee(null);
+            }
+        }
 
         return $this;
     }

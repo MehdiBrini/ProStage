@@ -51,6 +51,18 @@ class Stage
      */
     private $contactMail;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Formation", inversedBy="formations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $typeFormation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Entreprise", inversedBy="entreprises")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $EntrepriseReliee;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +148,30 @@ class Stage
     public function setContactMail(string $contactMail): self
     {
         $this->contactMail = $contactMail;
+
+        return $this;
+    }
+
+    public function getTypeFormation(): ?Formation
+    {
+        return $this->typeFormation;
+    }
+
+    public function setTypeFormation(?Formation $typeFormation): self
+    {
+        $this->typeFormation = $typeFormation;
+
+        return $this;
+    }
+
+    public function getEntrepriseReliee(): ?Entreprise
+    {
+        return $this->EntrepriseReliee;
+    }
+
+    public function setEntrepriseReliee(?Entreprise $EntrepriseReliee): self
+    {
+        $this->EntrepriseReliee = $EntrepriseReliee;
 
         return $this;
     }
