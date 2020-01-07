@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Stage;
+use App\Entity\Entreprise;
 
 class ProStageController extends AbstractController
 {
@@ -24,7 +25,15 @@ class ProStageController extends AbstractController
    
     public function afficherEntreprises()
     { 
-        return $this->render('pro_stage/affichageEntreprise.html.twig');
+        //Récupérer repository des entreprises
+        $recupEntreprise = $this->getDoctrine()->getRepository(Entreprise::class);
+
+        //Récupérer les entreprises de la BD
+        $lesEntreprises = $recupEntreprise->findAll();
+
+        //Envoyer les entreprises et les afficher
+        
+        return $this->render('pro_stage/affichageEntreprise.html.twig', ['uneEntreprise'=>$lesEntreprises]);
     }
 
    
@@ -36,7 +45,13 @@ class ProStageController extends AbstractController
 
     public function afficherStages($leID)
     { 
-        return $this->render('pro_stage/affichageStages.html.twig', ['idStage'=> $leID]);
+        //Récupérer repository des stages
+        $recupStage = $this->getDoctrine()->getRepository(Stage::class);
+
+        //Récupérer les entreprises de la BD
+        $leStage = $recupStage->find($leID);
+
+        return $this->render('pro_stage/affichageStages.html.twig', ['elStage'=> $leStage]);
     }
 
 }

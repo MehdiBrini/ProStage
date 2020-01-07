@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1> Titre Stage </h1>
-<h2> Nom Entreprise </h2>
-<p> Description </p>
-<h3> nom court formation </h3>
+
+<h1> {{elStage.titre}} </h1>
+<h2> {{elStage.entreprise.nom}} </h2>
+<p> {{elStage.description}} </p>
+<h3> {{elStage.formations.titre}} </h3>
 <p> site web entreprise <p>
 {% endblock %}
