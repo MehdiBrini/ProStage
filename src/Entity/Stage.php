@@ -24,7 +24,7 @@ class Stage
     private $description;
     /**
      * @ORM\Column(type="string", length=255)
-     */
+     */ 
     private $email;
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Entreprise", inversedBy="stages")
